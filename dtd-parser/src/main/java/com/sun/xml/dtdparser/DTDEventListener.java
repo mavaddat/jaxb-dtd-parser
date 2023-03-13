@@ -17,19 +17,25 @@ import org.xml.sax.SAXParseException;
 import java.util.EventListener;
 
 /**
- * All DTD parsing events are signaled through this interface. Parsing events comprise the following:
+ * All DTD parsing events are signaled through delegate methods of this
+ * interface. Client applications should implement <code>DTDEventListener</code>
+ * and <code>@Override</code> methods that pertain to DTD features the
+ * client application needs to process.
+ * <p>
+ * The following table associates several common parsing events with the methods
+ * that the DTD parser calls:</p>
  * <table>
- * <caption>Parsing events for DTD</caption>
- * <tr><th>Event</th><th>Method</th></tr>
- * <tr><td>Processing Instructions</td><td>{@link #processingInstruction}</td></tr>
- * <tr><td>Notation Declarations</td><td>{@link #notationDecl}</td></tr>
- * <tr><td>Unparsed Entity Declarations</td><td>{@link #unparsedEntityDecl}</td></tr>
- * <tr><td>Internal General Entity Declarations</td><td>{@link #internalGeneralEntityDecl}</td></tr>
- * <tr><td>External General Entity Declarations</td><td>{@link #internalGeneralEntityDecl}</td></tr>
- * <tr><td>Internal Parameter Entity Declarations</td><td>{@link #internalParameterEntityDecl}</td></tr>
- * <tr><td>External Parameter Entity Declarations</td><td>{@link #externalParameterEntityDecl}</td></tr>
- * <tr><td>Start of DTD</td><td>{@link #startDTD}</td></tr>
- * <tr><td>End of DTD</td><td>{@link #endDTD}</td></tr>
+ * <caption class="caption"><span>Common parsing events for DTD</span></caption>
+ * <tr class="table-header"><th>Event Description</th><th>Delegate Method</th></tr>
+ * <tr class="even-row-color"><td>Processing Instructions</td><td>{@link #processingInstruction}</td></tr>
+ * <tr class="odd-row-color"><td>Notation Declarations</td><td>{@link #notationDecl}</td></tr>
+ * <tr class="even-row-color"><td>Unparsed Entity Declarations</td><td>{@link #unparsedEntityDecl}</td></tr>
+ * <tr class="odd-row-color"><td>Internal General Entity Declarations</td><td>{@link #internalGeneralEntityDecl}</td></tr>
+ * <tr class="even-row-color"><td>External General Entity Declarations</td><td>{@link #internalGeneralEntityDecl}</td></tr>
+ * <tr class="odd-row-color"><td>Internal Parameter Entity Declarations</td><td>{@link #internalParameterEntityDecl}</td></tr>
+ * <tr class="even-row-color"><td>External Parameter Entity Declarations</td><td>{@link #externalParameterEntityDecl}</td></tr>
+ * <tr class="odd-row-color"><td>Start of DTD</td><td>{@link #startDTD}</td></tr>
+ * <tr class="even-row-color"><td>End of DTD</td><td>{@link #endDTD}</td></tr>
  * </table>
  * <p>
  * The DTD parser calls the method indicated in the second column for each event in the first column.
@@ -213,12 +219,14 @@ public interface DTDEventListener extends EventListener {
 
 
     /**
-     * This method executes upon notification of ignorable whitespace in element content.
-     * 
+     * This method executes upon notification of ignorable whitespace in element
+     * content.
+     *
      * <p>Validating Parsers must use this method to report each chunk
-     * of ignorable whitespace (see <a href="https://www.w3.org/TR/xml/#sec-white-space">the W3C XML 1.0 recommendation,
-     * section 2.10</a>): non-validating parsers may also use this method
-     * if they are capable of parsing and using content models.</p>
+     * of ignorable whitespace (see <a 
+     * href="https://www.w3.org/TR/xml/#sec-white-space">the W3C XML
+     *  1.0 recommendation, section 2.10</a>): non-validating parsers may also use
+     * this method if they are capable of parsing and using content models.</p>
      *
      * <p>SAX parsers may return all contiguous whitespace in a single
      * chunk, or they may split it into several chunks; however, all of
@@ -458,43 +466,43 @@ public interface DTDEventListener extends EventListener {
     void endContentModel(String elementName, short contentModelType) throws SAXException;
 
     /**
-     * An undecorated attribute declared in an ATTLIST declaration which sets
+     * An undecorated attribute declared in an <code>ATTLIST</code> declaration which sets
      * the default value of the attribute.
      */
     short USE_NORMAL = 0;
     /**
-     * An attribute declared in an ATTLIST declaration which is marked optional using the <code>#IMPLIED</code> decorator.
+     * An attribute declared in an <code>ATTLIST</code> declaration which is marked optional using the <code>#IMPLIED</code> decorator.
      */
     short USE_IMPLIED = 1;
     /**
-     * An attribute declared in an ATTLIST declaration which is marked fixed using the <code>#FIXED</code> decorator.
+     * An attribute declared in an <code>ATTLIST</code> declaration which is marked fixed using the <code>#FIXED</code> decorator.
      */
     short USE_FIXED = 2;
     /**
-     * An attribute declared in an ATTLIST declaration which is marked required using the <code>#REQUIRED</code> decorator.
+     * An attribute declared in an <code>ATTLIST</code> declaration which is marked required using the <code>#REQUIRED</code> decorator.
      */
     short USE_REQUIRED = 3;
 
     /**
-     * For each entry in an ATTLIST declaration,
+     * For each entry in an <code>ATTLIST</code> declaration,
      * this event will be fired.
      * @param elementName name of the element
      * @param attributeName name of the attribute
      * @param attributeType attribute type. This is the same as
      *                      the value of the TYPE parameter in the
-     *                      ATTLIST declaration, or "#IMPLIED" if the
-     *                      ATTLIST declaration did not specify a type.
+     *                      <code>ATTLIST</code> declaration, or "<code>#IMPLIED</code>" if the
+     *                      <code>ATTLIST</code> declaration did not specify a type.
      * @param enumeration enumeration values. This is the same as
      *                      the value of the ENUMERATION parameter in the
-     *                      ATTLIST declaration, or null if the ATTLIST
+     *                      <code>ATTLIST</code> declaration, or null if the <code>ATTLIST</code>
      *                      declaration did not specify an enumeration.
      * @param attributeUse attribute use. This is the same as
      *                      the value of the USE parameter in the
-     *                      ATTLIST declaration, or USE_NORMAL if the
-     *                      ATTLIST declaration did not specify a use.
+     *                      <code>ATTLIST</code> declaration, or <code>USE_NORMAL</code> if the
+     *                      <code>ATTLIST</code> declaration did not specify a use.
      * @param defaultValue default value. This is the same as
      *                      the value of the DEFAULT parameter in the
-     *                      ATTLIST declaration, or null if the ATTLIST
+     *                      <code>ATTLIST</code> declaration, or null if the <code>ATTLIST</code>
      *                      declaration did not specify a default.
      *
      * <p>
@@ -510,10 +518,11 @@ public interface DTDEventListener extends EventListener {
     /**
      * This method executes upon notification of child element of child content model. This method is called for each child element.
      * @param elementName name of the child element
-     * @param occurrence occurrence of the child element
-     *                  {@link #OCCURS_ZERO_OR_ONE}
-     *                  {@link #OCCURS_ZERO_OR_MORE}
-     *                  {@link #OCCURS_ONE_OR_MORE}
+     * @param occurrence occurrence of the child element <ul>
+     *                  <li>{@link #OCCURRENCE_ONCE}</li>
+     *                  <li>{@link #OCCURRENCE_ZERO_OR_ONE}</li>
+     *                  <li>{@link #OCCURRENCE_ZERO_OR_MORE}</li>
+     *                  <li>{@link #OCCURRENCE_ONE_OR_MORE}</li></ul>
      * @throws SAXException for errors
      * @see #childElement(String, short)
      */
@@ -536,10 +545,11 @@ public interface DTDEventListener extends EventListener {
 
     /**
      * This method executes upon notification of end of model group.
-     * @param occurrence occurrence of the model group
-     *                  {@link #OCCURS_ZERO_OR_ONE}
-     *                  {@link #OCCURS_ZERO_OR_MORE}
-     *                  {@link #OCCURS_ONE_OR_MORE}
+     * @param occurrence occurrence of the model group <ul>
+     *                  <li>{@link #OCCURRENCE_ONCE}</li>
+     *                  <li>{@link #OCCURRENCE_ZERO_OR_ONE}</li>
+     *                  <li>{@link #OCCURRENCE_ZERO_OR_MORE}</li>
+     *                  <li>{@link #OCCURRENCE_ONE_OR_MORE}</li></ul>
      * @throws SAXException for errors
      */
     void endModelGroup(short occurrence) throws SAXException;
