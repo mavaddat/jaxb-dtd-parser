@@ -25,7 +25,7 @@ import java.util.EventListener;
  * The following table associates several common parsing events with the methods
  * that the DTD parser calls:</p>
  * <table>
- * <caption class="caption"><span>Common parsing events for DTD</span></caption>
+ * <caption class="caption" style="font-family: sans-serif;"><span>Common DTD parsing events</span></caption>
  * <tr class="table-header"><th>Event Description</th><th>Delegate Method</th></tr>
  * <tr class="even-row-color"><td>Processing Instructions</td><td>{@link #processingInstruction}</td></tr>
  * <tr class="odd-row-color"><td>Notation Declarations</td><td>{@link #notationDecl}</td></tr>
