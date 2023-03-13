@@ -18,7 +18,8 @@ import java.util.EventListener;
 
 /**
  * All DTD parsing events are signaled through delegate methods of this
- * interface. Client applications should either <ol>
+ * interface. Client applications should either
+ * <ol>
  * <li>implement <code>DTDEventListener</code> and <code>@Override</code>
  * methods that pertain to DTD features they need to process, <strong>or</strong></li>
  * <li>extend <code>DTDHandlerBase</code> and override only those methods 
