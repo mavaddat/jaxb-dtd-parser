@@ -75,14 +75,21 @@ public class InputEntity {
     final private static int BUFSIZ = 8 * 1024 + 1;
 
     final private static char[] newline = {'\n'};
-
+    /**
+     * Gets the input entity based on the event listener and locale.
+     * @param h the event listener
+     * @param l the locale
+     * @return the input entity
+     */
     public static InputEntity getInputEntity(DTDEventListener h, Locale l) {
         InputEntity retval = new InputEntity();
         retval.errHandler = h;
         retval.locale = l;
         return retval;
     }
-
+    /**
+     * Obscures the constructor.
+     */
     private InputEntity() {
     }
 
@@ -93,6 +100,10 @@ public class InputEntity {
     // constraints to monitor.  also, only external entities get decent
     // location diagnostics.
     //
+    /**
+     * Returns true if this is an internal entity reader.
+     * @return true if this is an internal entity reader
+     */
     public boolean isInternal() {
         return reader == null;
     }
@@ -100,14 +111,24 @@ public class InputEntity {
     //
     // predicate:  return true iff this is the toplevel document
     //
+    /**
+     * Returns true if this is the top level document.
+     * @return true if this is the top level document
+     */
     public boolean isDocument() {
         return next == null;
     }
 
     //
     // predicate:  return true iff this is a PE expansion (so that
-    // LexicalEventListner.endParsedEntity won't be called)
+    // LexicalEventListener.endParsedEntity won't be called)
     //
+    /**
+     * Returns true if this is a PE expansion, so that
+     * <code>LexicalEventListener.endParsedEntity</code> won't be called
+     * @return true if this is a PE expansion
+     * @see LexicalEventListener#endParsedEntity
+     */
     public boolean isParameterEntity() {
         return isPE;
     }
@@ -115,6 +136,10 @@ public class InputEntity {
     //
     // return name of current entity
     //
+    /**
+     * Gets the name of the current entity.
+     * @return the name of the current entity
+     */
     public String getName() {
         return name;
     }
@@ -122,6 +147,15 @@ public class InputEntity {
     //
     // use this for an external parsed entity
     //
+    /**
+     * Initializes the input entity.
+     * @param in the input source
+     * @param name the name of the entity
+     * @param stack the input entity stack
+     * @param isPE true if this is a PE
+     * @throws IOException if there is an I/O error
+     * @throws SAXException if there is a SAX error
+     */
     public void init(InputSource in, String name, InputEntity stack,
                      boolean isPE)
             throws IOException, SAXException {
@@ -152,6 +186,14 @@ public class InputEntity {
     //
     // use this for an internal parsed entity; buffer is readonly
     //
+    /**
+     * Initializes the input entity.
+     * @param b the character array
+     * @param name the name of the entity
+     * @param stack the input entity stack
+     * @param isPE true if this is a PE
+     * @throws SAXException if there is a SAX error
+     */
     public void init(char[] b, String name, InputEntity stack, boolean isPE)
             throws SAXException {
 
@@ -163,6 +205,11 @@ public class InputEntity {
         checkRecursion(stack);
     }
 
+    /**
+     * Checks for recursion based on the input entity stack.
+     * @param stack the input entity stack
+     * @throws SAXException if there is a SAX error
+     */
     private void checkRecursion(InputEntity stack)
             throws SAXException {
 
@@ -174,6 +221,11 @@ public class InputEntity {
         }
     }
 
+    /**
+     * Removes and returns the last character from the buffer.
+     * @return the last character from the buffer
+     * @throws IOException for errors
+     */
     public InputEntity pop() throws IOException {
 
         // caller has ensured there's nothing left to read
@@ -185,6 +237,7 @@ public class InputEntity {
      * returns true iff there's no more data to consume ...
      * @throws IOException for errors
      * @throws SAXException for errors
+     * @return true iff there's no more data to consume
      */
     public boolean isEOF() throws IOException, SAXException {
 
@@ -345,6 +398,7 @@ public class InputEntity {
      * optional grammatical whitespace (discarded)
      * @throws IOException for errors
      * @throws SAXException for errors
+     * @return true if whitespace was found
      */
     public boolean maybeWhitespace()
             throws IOException, SAXException {
@@ -392,8 +446,11 @@ public class InputEntity {
      *
      * <P> the document handler's characters() method is called
      * on all the content found
+     * @param docHandler the document handler
      * @throws IOException for errors
      * @throws SAXException for errors
+     * @return true if any content was found
+     * @see #maybeWhitespace
      */
     @SuppressWarnings("fallthrough")
     public boolean parsedContent(DTDEventListener docHandler
@@ -566,6 +623,7 @@ public class InputEntity {
      *                                 non-whitespace characters will cause validation errors
      * @param whitespaceInvalidMessage if true, ignorable whitespace
      *                                 causes a validity error report as well as a callback
+     * @return true if CDATA was found, false if not
      * @throws IOException for errors
      * @throws SAXException for errors
      */
@@ -711,6 +769,8 @@ public class InputEntity {
      *
      * <P> the document handler's ignorableWhitespace() method
      * is called on all the whitespace found
+     * @param handler gets callbacks for ignorable whitespace
+     * @return true if ignorable whitespace was found, false if not
      * @throws IOException for errors
      * @throws SAXException for errors
      */
@@ -772,6 +832,8 @@ public class InputEntity {
      *
      * <P> NOTE:  two alternative string representations are
      * both passed in, since one is faster.
+     * @param next string to match
+     * @param chars string to match
      * @return false iff 'next' string isn't as provided
      * @throws IOException for errors
      * @throws SAXException for errors
@@ -842,6 +904,10 @@ public class InputEntity {
     // string; such subsets are normally small, and many applications
     // don't even care about this.
     //
+    /**
+     * Starts the process of remembering the text that is read.
+     * @throws InternalError if the previous text was not remembered
+     */
     public void startRemembering() {
 
         if (startRemember != 0)
@@ -849,6 +915,11 @@ public class InputEntity {
         startRemember = start;
     }
 
+    /**
+     * Returns the text that was remembered since the last call
+     * to {@link #startRemembering}.
+     * @return the text that was remembered
+     */
     public String rememberText() {
 
         String retval;
@@ -867,7 +938,10 @@ public class InputEntity {
         rememberedText = null;
         return retval;
     }
-
+    /**
+     * Gets the top entity in the stack of entities.
+     * @return the top entity in the stack of entities
+     */
     private InputEntity getTopEntity() {
 
         InputEntity current = this;
@@ -982,7 +1056,9 @@ public class InputEntity {
         // assert extra == true
             startRemember = 1;
     }
-
+    /**
+     * Closes the input source
+     */
     public void close() {
 
         try {
@@ -991,6 +1067,7 @@ public class InputEntity {
             isClosed = true;
         } catch (IOException e) {
             /* NOTHING */
+            
         }
     }
 

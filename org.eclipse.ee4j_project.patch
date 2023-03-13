@@ -1,0 +1,17 @@
+--- %USERPROFILE%/.m2/repository/org/eclipse/ee4j/project/1.0.7/project-1.0.7.pom	Sun Mar 12 17:24:05 2023
++++ %USERPROFILE%/.m2/repository/org/eclipse/ee4j/project/1.0.7/project-1.0.7.pom	Sun Mar 12 17:09:57 2023
+@@ -116 +116 @@
+-            <url>${sonatypeOssDistMgmtSnapshotsUrl}</url>
++            <url>https://jakarta.oss.sonatype.org/content/repositories/snapshots/</url>
+@@ -271 +271 @@
+-                    <url>${sonatypeOssDistMgmtSnapshotsUrl}</url>
++                    <url>https://jakarta.oss.sonatype.org/content/repositories/snapshots/</url>
+@@ -284 +284 @@
+-                    <url>${sonatypeOssDistMgmtSnapshotsUrl}</url>
++                    <url>https://jakarta.oss.sonatype.org/content/repositories/snapshots/</url>
+@@ -308 +308 @@
+-                    <url>${sonatypeOssDistMgmtStagingUrl}</url>
++                    <url>https://jakarta.oss.sonatype.org/content/groups/staging/</url>
+@@ -321 +321 @@
+-                    <url>${sonatypeOssDistMgmtStagingUrl}</url>
++                    <url>https://jakarta.oss.sonatype.org/content/groups/staging/</url>

@@ -197,7 +197,7 @@ public class XmlChars {
     // representations in Unicode, e.g. using combining chars.
     //
     private static boolean isCompatibilityChar(char c) {
-        // the numerous comparisions here seem unavoidable,
+        // the numerous comparisons here seem unavoidable,
         // but the switch can reduce the number which must
         // actually be executed.
 

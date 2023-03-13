@@ -69,7 +69,7 @@ import java.util.ResourceBundle;
  * which have no normal reason to support such passdown, or else the system
  * default locale must be used instead of the one the client needs.</p>
  *
- * <p> The following guidelines should be used when constructiong
+ * <p> The following guidelines should be used when constructing
  * multi-language applications:</p>
  * <ol>
  * <li> Always use <a href=#chooseLocale>chooseLocale</a> to select the

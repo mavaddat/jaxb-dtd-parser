@@ -50,15 +50,55 @@ import java.util.logging.Logger;
  */
 public class DTDParser {
 
+    /**
+     * CDATA type. This is a constant used to indicate that the type of an
+     * attribute is CDATA.
+     */
     public final static String TYPE_CDATA = "CDATA";
+    /**
+     * ID type. This is a constant used to indicate that the type of an
+     * attribute is ID.
+     */
     public final static String TYPE_ID = "ID";
+    /**
+     * IDREF type. This is a constant used to indicate that the type of an
+     * attribute is IDREF.
+     */
     public final static String TYPE_IDREF = "IDREF";
+    /**
+     * IDREFS type. This is a constant used to indicate that the type of an
+     * attribute is IDREFS.
+     */
     public final static String TYPE_IDREFS = "IDREFS";
+    /**
+     * ENTITY type. This is a constant used to indicate that the type of an
+     * attribute is ENTITY.
+     */
     public final static String TYPE_ENTITY = "ENTITY";
+    /**
+     * ENTITIES type. This is a constant used to indicate that the type of an
+     * attribute is ENTITIES.
+     */
     public final static String TYPE_ENTITIES = "ENTITIES";
+    /**
+     * NMTOKEN type. This is a constant used to indicate that the type of an
+     * attribute is NMTOKEN.
+     */
     public final static String TYPE_NMTOKEN = "NMTOKEN";
+    /**
+     * NMTOKENS type. This is a constant used to indicate that the type of an
+     * attribute is NMTOKENS.
+     */
     public final static String TYPE_NMTOKENS = "NMTOKENS";
+    /**
+     * NOTATION type. This is a constant used to indicate that the type of an
+     * attribute is NOTATION.
+     */
     public final static String TYPE_NOTATION = "NOTATION";
+    /**
+     * ENUMERATION type. This is a constant used to indicate that the type of an
+     * attribute is ENUMERATION.
+     */
     public final static String TYPE_ENUMERATION = "ENUMERATION";
     // stack of input entities being merged
     private InputEntity in;
@@ -71,6 +111,9 @@ public class DTDParser {
     private boolean doLexicalPE;
     // DTD state, used during parsing
 //    private SimpleHashtable    elements = new SimpleHashtable (47);
+    /**
+     * The set of element names declared in the DTD.
+     */
     protected final Set<String> declaredElements = new HashSet<>();
     private final SimpleHashtable<String, EntityDecl> params = new SimpleHashtable<>(7);
     // exposed to package-private subclass
@@ -162,6 +205,7 @@ public class DTDParser {
 
     /**
      * Used by applications to set handling of DTD parsing events.
+     * @param handler the handler
      */
     public void setDtdHandler(DTDEventListener handler) {
         dtdHandler = handler;
@@ -200,6 +244,7 @@ public class DTDParser {
 
     /**
      * Parse a DTD.
+     * @param in InputSource
      * @throws IOException for errors
      * @throws SAXException for errors
      */
@@ -211,6 +256,7 @@ public class DTDParser {
 
     /**
      * Parse a DTD.
+     * @param uri URI
      * @throws IOException for errors
      * @throws SAXException for errors
      */
@@ -809,7 +855,7 @@ public class DTDParser {
                 return null;
             }
             fatal("P-024", new Object[]{name});
-            // NOTREACHED
+            // NOT REACHED
         }
 
         if (!peek(name)) {
@@ -948,7 +994,7 @@ public class DTDParser {
      * To validate, subclassers should at this time make sure that values are of
      * the declared types:<UL> <LI> ID and IDREF(S) values are Names <LI>
      * NMTOKEN(S) are Nmtokens <LI> ENUMERATION values match one of the tokens
-     * <LI> NOTATION values match a notation name <LI> ENTITIY(IES) values match
+     * <LI> NOTATION values match a notation name <LI> ENTITY(IES) values match
      * an unparsed external entity </UL>
      *
      * <P> Separately, make sure IDREF values match some ID provided in the
@@ -1275,19 +1321,19 @@ public class DTDParser {
 
         if (c == '?') {
             strTmp.append(c);
-            return DTDEventListener.OCCURENCE_ZERO_OR_ONE;
+            return DTDEventListener.OCCURRENCE_ZERO_OR_ONE;
             //        original.setRepeat(Repeat.ZERO_OR_ONE);
         } else if (c == '+') {
             strTmp.append(c);
-            return DTDEventListener.OCCURENCE_ONE_OR_MORE;
+            return DTDEventListener.OCCURRENCE_ONE_OR_MORE;
             //        original.setRepeat(Repeat.ONE_OR_MORE);
         } else if (c == '*') {
             strTmp.append(c);
-            return DTDEventListener.OCCURENCE_ZERO_OR_MORE;
+            return DTDEventListener.OCCURRENCE_ZERO_OR_MORE;
             //        original.setRepeat(Repeat.ZERO_OR_MORE);
         } else {
             ungetc();
-            return DTDEventListener.OCCURENCE_ONCE;
+            return DTDEventListener.OCCURRENCE_ONCE;
         }
     }
 
@@ -1743,7 +1789,7 @@ public class DTDParser {
             return 2;
         }
         fatal("P-051", new Object[]{Integer.toHexString(ucs4)});
-        // NOTREACHED
+        // NOT REACHED
         return -1;
     }
 
@@ -2211,7 +2257,9 @@ public class DTDParser {
         in.ungetc();
         return null;
     }
-
+    /**
+     * Returns the next character, or throws an exception if it's not
+     */
     private void nextChar(char c, String location, String near)
             throws IOException, SAXException {
 
@@ -2232,7 +2280,18 @@ public class DTDParser {
         r.init(buf, name, in, !isGeneral);
         in = r;
     }
-
+    /**
+     * Pushes a new reader for the specified external entity.
+     * If the entity is a parameter entity, it's pushed as a
+     * non-lexical entity.
+     * <p>
+     * If the entity is a general entity, it's pushed as a
+     * lexical entity, and the entity's text is parsed for
+     * parameter entity references.
+     * @param next the external entity to push
+     * @throws IOException if the entity can't be opened
+     * @throws SAXException if the entity can't be opened
+     */
     private void pushReader(ExternalEntity next)
             throws IOException, SAXException {
 
@@ -2256,28 +2315,46 @@ public class DTDParser {
         r.init(s, next.name, in, next.isPE);
         in = r;
     }
-
+    /**
+     * Gets the public identifier of the current input
+     * @return the public identifier of the current input
+     */
     public String getPublicId() {
 
         return (in == null) ? null : in.getPublicId();
     }
-
+    /**
+     * Gets the system identifier of the current input
+     * @return the system identifier of the current input
+     */
     public String getSystemId() {
 
         return (in == null) ? null : in.getSystemId();
     }
-
+    /**
+     * Gets the line number of the current character in the input
+     * @return the line number of the current character in the input
+     */
     public int getLineNumber() {
 
         return (in == null) ? -1 : in.getLineNumber();
     }
-
+    /**
+     * Gets the column number of the current character in the input
+     * @return the column number of the current character in the input
+     */
     public int getColumnNumber() {
 
         return (in == null) ? -1 : in.getColumnNumber();
     }
 
-    // error handling convenience routines
+    /**
+     * Raises a warning message from the parser. This is
+     * called by the parser when it encounters a warning.
+     * @param messageId the message identifier
+     * @param parameters the message parameters
+     * @throws SAXException if the application wants to abort
+     */
     private void warning(String messageId, Object[] parameters)
             throws SAXException {
 
@@ -2286,7 +2363,13 @@ public class DTDParser {
 
         dtdHandler.warning(e);
     }
-
+    /**
+     * Raises an error message from the parser. This is
+     * called by the parser when it encounters an error.
+     * @param messageId the message identifier
+     * @param parameters the message parameters
+     * @throws SAXException if the application wants to abort
+     */
     void error(String messageId, Object[] parameters)
             throws SAXException {
 
@@ -2296,11 +2379,24 @@ public class DTDParser {
         dtdHandler.error(e);
     }
 
+    /**
+     * Raises a fatal error message from the parser. This is
+     * called by the parser when it encounters a fatal error.
+     * @param messageId the message identifier
+     * @throws SAXException if the application wants to abort
+     */
     private void fatal(String messageId) throws SAXException {
 
         fatal(messageId, null);
     }
 
+    /**
+     * Raises a fatal error message from the parser. This is
+     * called by the parser when it encounters a fatal error.
+     * @param messageId the message identifier
+     * @param parameters the message parameters
+     * @throws SAXException if the application wants to abort
+     */
     private void fatal(String messageId, Object[] parameters)
             throws SAXException {
 
@@ -2321,6 +2417,10 @@ public class DTDParser {
     // are repeated in multiple documents (e.g. stylesheets) we go
     // a bit further, and intern globally.
     //
+    /**
+     * This helper class is used to cache the entity names for cutting down
+     * on memory and CPU usage.
+     */
     static class NameCache {
         //
         // Unless we auto-grow this, the default size should be a
@@ -2328,12 +2428,20 @@ public class DTDParser {
         // we've yet seen (and be prime).  If it's too small, the
         // penalty is just excess cache collisions.
         //
-
+        /**
+         * The name cache entry. Size of the cache is 541 to be prime and slightly larger than the number of names in most XML files.
+         */
         NameCacheEntry[] hashtable = new NameCacheEntry[541];
 
         //
         // Usually we just want to get the 'symbol' for these chars
         //
+        /**
+         * Looks up the name (as a string) in the cache.
+         * @param value the value
+         * @param len the length
+         * @return the name
+         */
         String lookup(char[] value, int len) {
 
             return lookupEntry(value, len).name;
@@ -2344,6 +2452,12 @@ public class DTDParser {
         // string, so there's an accessor which exposes them.
         // (Mostly for element end tags.)
         //
+        /**
+         * Looks up the name (as a NameCacheEntry) in the cache.
+         * @param value the value
+         * @param len the length
+         * @return the name
+         */
         NameCacheEntry lookupEntry(char[] value, int len) {
 
             int index = 0;
@@ -2382,6 +2496,10 @@ public class DTDParser {
         }
     }
 
+    /**
+     * This helper class is used to cache name entries for cutting down
+     * on memory and CPU usage.
+     */
     static class NameCacheEntry {
 
         String name;
@@ -2404,8 +2522,13 @@ public class DTDParser {
     //
     // Message catalog for diagnostics.
     //
+    /**
+     * The message catalog to hold diagnostic messages.
+     */
     static final Catalog messages = new Catalog();
-
+    /**
+     * The message catalog class to hold diagnostic messages.
+     */
     static final class Catalog extends MessageCatalog {
 
         Catalog() {

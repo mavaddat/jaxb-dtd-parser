@@ -1,0 +1,11 @@
+{
+    "xml.java.home": "C:/Program Files/BellSoft/LibericaJDK-19-Full/",
+    "xml.logs.client": true,
+    "explorerExclude.backup": {},
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "cSpell.words": [
+        "ATTLIST",
+        "dtdparser"
+    ],
+    "editor.tabSize": 4
+}

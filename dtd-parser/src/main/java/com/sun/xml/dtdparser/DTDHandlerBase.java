@@ -115,7 +115,7 @@ public class DTDHandlerBase implements DTDEventListener {
     }
 
     @Override
-    public void childElement(String elementName, short occurence) throws SAXException {
+    public void childElement(String elementName, short occurrence) throws SAXException {
     }
 
     @Override
@@ -127,7 +127,7 @@ public class DTDHandlerBase implements DTDEventListener {
     }
 
     @Override
-    public void endModelGroup(short occurence) throws SAXException {
+    public void endModelGroup(short occurrence) throws SAXException {
     }
 
     @Override

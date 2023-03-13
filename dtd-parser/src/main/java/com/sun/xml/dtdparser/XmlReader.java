@@ -29,7 +29,7 @@ import java.util.Map;
 
 /**
  * This handles several XML-related tasks that normal java.io Readers
- * don't support, inluding use of IETF standard encoding names and
+ * don't support, including use of IETF standard encoding names and
  * automatic detection of most XML encodings.  The former is needed
  * for interoperability; the latter is needed to conform with the XML
  * spec.  This class also optimizes reading some common encodings by
