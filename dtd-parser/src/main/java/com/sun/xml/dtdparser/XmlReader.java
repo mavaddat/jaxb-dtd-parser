@@ -658,7 +658,7 @@ final class XmlReader extends Reader {
                                 + " beginning with 0x"
                                 + Integer.toHexString(buffer[start] & 0xff));
 
-                } catch (ArrayIndexOutOfBoundsException e) {
+                } catch (ArrayIndexOutOfBoundsException err) {
                     // off > length && length >= buffer.length
                     c = 0;
                 }

@@ -1040,9 +1040,9 @@ public class InputEntity {
         try {
             len = buf.length - len;
             len = reader.read(buf, finish, len);
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException err) {
             fatal("P-075", new Object[]{e.getMessage()});
-        } catch (CharConversionException e) {
+        } catch (CharConversionException err) {
             fatal("P-076", new Object[]{e.getMessage()});
         }
         if (len >= 0)
@@ -1065,7 +1065,7 @@ public class InputEntity {
             if (reader != null && !isClosed)
                 reader.close();
             isClosed = true;
-        } catch (IOException e) {
+        } catch (IOException err) {
             /* NOTHING */
             
         }
@@ -1075,7 +1075,7 @@ public class InputEntity {
     private void fatal(String messageId, Object[] params)
             throws SAXException {
 
-        SAXParseException x = new SAXParseException(DTDParser.messages.getMessage(locale, messageId, params), null);
+        SAXParseException err = new SAXParseException(DTDParser.messages.getMessage(locale, messageId, params), null);
 
         // not continuable ... e.g. WF errors
         close();

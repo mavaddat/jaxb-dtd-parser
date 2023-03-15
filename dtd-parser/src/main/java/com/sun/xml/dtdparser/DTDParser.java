@@ -365,7 +365,7 @@ public class DTDParser {
             afterRoot();
             dtdHandler.endDTD();
 
-        } catch (EndOfInputException e) {
+        } catch (EndOfInputException err) {
             if (!in.isDocument()) {
                 String name = in.getName();
                 do {    // force a relevant URI and line number
@@ -375,7 +375,7 @@ public class DTDParser {
             } else {
                 fatal("P-003", null);
             }
-        } catch (RuntimeException e) {
+        } catch (RuntimeException err) {
             LOGGER.log(Level.SEVERE, "Internal DTD parser error.", e);
             throw new SAXParseException(e.getMessage() != null
                     ? e.getMessage() : e.getClass().getName(),
@@ -763,7 +763,7 @@ public class DTDParser {
                         strTmp.append((char) c);
                     }
                 }
-            } catch (EndOfInputException e) {
+            } catch (EndOfInputException err) {
                 //
                 // This is fatal EXCEPT when we're processing a PE...
                 // in which case a validating processor reports an error.
@@ -821,7 +821,7 @@ public class DTDParser {
                     }
                     strTmp.append(c);
                 }
-            } catch (EndOfInputException e) {
+            } catch (EndOfInputException err) {
                 fatal("P-021");
             }
             dtdHandler.processingInstruction(target, strTmp.toString());
@@ -2299,7 +2299,7 @@ public class DTDParser {
         InputSource s;
         try {
             s = next.getInputSource(resolver);
-        } catch (IOException e) {
+        } catch (IOException err) {
             String msg =
                     "unable to open the external entity from :" + next.systemId;
             if (next.publicId != null) {
@@ -2358,7 +2358,7 @@ public class DTDParser {
     private void warning(String messageId, Object[] parameters)
             throws SAXException {
 
-        SAXParseException e = new SAXParseException(messages.getMessage(locale, messageId, parameters),
+        SAXParseException err = new SAXParseException(messages.getMessage(locale, messageId, parameters),
                 getPublicId(), getSystemId(), getLineNumber(), getColumnNumber());
 
         dtdHandler.warning(e);
@@ -2373,7 +2373,7 @@ public class DTDParser {
     void error(String messageId, Object[] parameters)
             throws SAXException {
 
-        SAXParseException e = new SAXParseException(messages.getMessage(locale, messageId, parameters),
+        SAXParseException err = new SAXParseException(messages.getMessage(locale, messageId, parameters),
                 getPublicId(), getSystemId(), getLineNumber(), getColumnNumber());
 
         dtdHandler.error(e);
@@ -2400,7 +2400,7 @@ public class DTDParser {
     private void fatal(String messageId, Object[] parameters)
             throws SAXException {
 
-        SAXParseException e = new SAXParseException(messages.getMessage(locale, messageId, parameters),
+        SAXParseException err = new SAXParseException(messages.getMessage(locale, messageId, parameters),
                 getPublicId(), getSystemId(), getLineNumber(), getColumnNumber());
 
         dtdHandler.fatalError(e);

@@ -186,7 +186,7 @@ abstract public class MessageCatalog {
 
         try {
             bundle = ResourceBundle.getBundle(bundleName, locale);
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException err) {
             bundle = ResourceBundle.getBundle(bundleName, Locale.ENGLISH);
         }
         return bundle.getString(messageId);
@@ -241,7 +241,7 @@ abstract public class MessageCatalog {
 
         try {
             bundle = ResourceBundle.getBundle(bundleName, locale);
-        } catch (MissingResourceException e) {
+        } catch (MissingResourceException err) {
             bundle = ResourceBundle.getBundle(bundleName, Locale.ENGLISH);
             /*String retval;
 
@@ -467,7 +467,7 @@ abstract public class MessageCatalog {
                 Class.forName(name);
                 cache.put(localeName, Boolean.TRUE);
                 return true;
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException err) {
             }
 
             // ... then property files (only for ISO Latin/1 messages)

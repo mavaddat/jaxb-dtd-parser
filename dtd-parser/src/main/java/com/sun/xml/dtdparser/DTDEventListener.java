@@ -470,20 +470,20 @@ public interface DTDEventListener extends EventListener {
     void endContentModel(String elementName, short contentModelType) throws SAXException;
 
     /**
-     * An undecorated attribute declared in an <code>ATTLIST</code> declaration which sets
+     * An unpredicated attribute declared in an <code>ATTLIST</code> declaration which sets
      * the default value of the attribute.
      */
     short USE_NORMAL = 0;
     /**
-     * An attribute declared in an <code>ATTLIST</code> declaration which is marked optional using the <code>#IMPLIED</code> decorator.
+     * An attribute declared in an <code>ATTLIST</code> declaration which is marked optional using the <code>#IMPLIED</code> keyword predicate.
      */
     short USE_IMPLIED = 1;
     /**
-     * An attribute declared in an <code>ATTLIST</code> declaration which is marked fixed using the <code>#FIXED</code> decorator.
+     * An attribute declared in an <code>ATTLIST</code> declaration which is marked fixed using the <code>#FIXED</code> keyword predicate.
      */
     short USE_FIXED = 2;
     /**
-     * An attribute declared in an <code>ATTLIST</code> declaration which is marked required using the <code>#REQUIRED</code> decorator.
+     * An attribute declared in an <code>ATTLIST</code> declaration which is marked required using the <code>#REQUIRED</code> keyword predicate.
      */
     short USE_REQUIRED = 3;
 

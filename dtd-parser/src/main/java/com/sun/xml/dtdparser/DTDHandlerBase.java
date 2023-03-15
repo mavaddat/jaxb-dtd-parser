@@ -34,12 +34,12 @@ public class DTDHandlerBase implements DTDEventListener {
     }
 
     @Override
-    public void fatalError(SAXParseException e) throws SAXException {
+    public void fatalError(SAXParseException err) throws SAXException {
         throw e;
     }
 
     @Override
-    public void error(SAXParseException e) throws SAXException {
+    public void error(SAXParseException err) throws SAXException {
         throw e;
     }
 
