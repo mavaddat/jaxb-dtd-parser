@@ -5,7 +5,8 @@
     "java.configuration.updateBuildConfiguration": "interactive",
     "cSpell.words": [
         "ATTLIST",
-        "dtdparser"
+        "dtdparser",
+        "letterlike"
     ],
     "editor.tabSize": 4
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2022, 2023 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Distribution License v. 1.0, which is available at
@@ -17,6 +17,7 @@ package com.sun.xml.dtdparser;
  * both to parse and to create such documents.
  *
  * @author David Brownell
+ * @author Mavaddat Javid
  * @version 1.1, 00/08/05
  */
 public class XmlChars {
@@ -34,7 +35,7 @@ public class XmlChars {
      * including unpaired surrogates.)
      *
      * <P> In XML, UCS-4 characters can also be encoded by the use of
-     * <em>character references</em> such as <b>&amp;#x12345678;</b>, which
+     * <em>character references</em> such as <b>{@code &#x12345678;}</b>, which
      * happens to refer to a character that is disallowed in XML documents.
      * UCS-4 characters allowed in XML documents can be expressed with
      * one or two Unicode characters.
@@ -143,7 +144,7 @@ public class XmlChars {
     /**
      * Returns true if the character is an XML "letter".  XML Names must
      * start with Letters or a few other characters, but other characters
-     * in names must only satisfy the <em>isNameChar</em> predicate.
+     * in names must only satisfy the {@code isNameChar} predicate.
      *
      * @param c character to test
      * @return true if the character is an XML "letter"

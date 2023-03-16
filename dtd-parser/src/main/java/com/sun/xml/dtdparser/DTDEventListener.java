@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2022, 2023 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Distribution License v. 1.0, which is available at
@@ -44,6 +44,8 @@ import java.util.EventListener;
  * <p>
  * The DTD parser calls the method indicated in the second column for each event in the first column.
  * </p>
+ * @since 1.0.7, SAX 1.0
+ * @author Mavaddat Javid
  */
 public interface DTDEventListener extends EventListener {
 
@@ -54,49 +56,81 @@ public interface DTDEventListener extends EventListener {
     void setDocumentLocator(Locator loc);
 
     /**
-     * This method executes upon notification of a Processing Instruction.
-     * Processing instructions contain information meaningful
-     * to the application.
+     * This method executes upon notification of a processing instruction as per <a href="https://www.w3.org/TR/xml-stylesheet/xml-stylesheet.xml#the-xml-stylesheet-processing-instruction">W3 Rec <cite>Associating Style Sheets with XML documents</cite></a>.
+     * 
+     * <p>Client applications may override this method in a subclass to take
+     * specific actions for each processing instruction, such as setting status
+     * variables or invoking other methods.</p>
      *
      * @param target The target of the processing instruction
-     *               which should have meaning to the application.
-     * @param data   The instruction itself which should contain
-     *               valid XML characters.
-     * @throws SAXException for errors
+     * @param data   The processing instruction data, or null if
+     *               none is supplied.
+     * @throws SAXException Any SAX exception, possibly
+     *                      wrapping another exception.
+     * @see org.xml.sax.HandlerBase#processingInstruction
      */
     void processingInstruction(String target, String data)
             throws SAXException;
 
     /**
-     * This method executes upon notification of a Notation Declaration.
-     * Notation declarations are used by elements and entities
-     * for identifying embedded non-XML data.
+     * Receive notification of a notation declaration event per <a href="https://www.w3.org/TR/REC-xml/#sec-notation-decl">W3 Rec <cite>Extensible Markup Language (XML) 1.0</cite></a>.
      *
-     * @param name     The notation name, referred to by entities and
-     *                 elements.
-     * @param publicId The public identifier
-     * @param systemId The system identifier
-     * @throws SAXException for errors
+     * <p>It is up to a client application to record the notation for later
+     * reference, if necessary;
+     * notations may appear as attribute values and in unparsed entity
+     * declarations, and are sometime used with processing instruction
+     * target names.</p>
+     *
+     * <p>At least one of <code>publicId</code> and <code>systemId</code> shall
+     * be non-null. If a system identifier is present, and it is a URL, the SAX
+     * parser shall resolve it fully before passing it to the client
+     * application through this event.</p>
+     *
+     * <p>There is no guarantee that the notation declaration will be
+     * reported before any unparsed entities that use it.</p>
+     *
+     * @param name The notation name.
+     * @param publicId The notation's public identifier, or null if
+     *        none was given.
+     * @param systemId The notation's system identifier, or null if
+     *        none was given.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *            wrapping another exception.
+     * @see #unparsedEntityDecl
+     * @see org.xml.sax.Attributes
      */
     void notationDecl(String name, String publicId, String systemId)
             throws SAXException;
 
     /**
-     * This method executes upon notification of an unparsed entity declaration.
-     * Unparsed entities are non-XML data such as 
+     * Receive notification of an unparsed entity declaration event per <a href="https://www.w3.org/TR/REC-xml/#dt-unparsed">W3 Rec <cite>Extensible Markup Language (XML) 1.0</cite></a>.
      *
-     * @param name         The name of the unparsed entity.
-     * @param publicId     The public identifier
-     * @param systemId     The system identifier
-     * @param notationName The associated notation
-     * @throws SAXException for errors
+     * <p>Note that the notation name corresponds to a notation
+     * reported by the {@link #notationDecl notationDecl} event.
+     * It is up to the application to record the entity for later
+     * reference, if necessary;
+     * unparsed entities may appear as attribute values.
+     * </p>
+     *
+     * <p>If the system identifier is a URL, the parser must resolve it
+     * fully before passing it to the application.</p>
+     *
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *            wrapping another exception.
+     * @param name The unparsed entity's name.
+     * @param publicId The entity's public identifier, or null if none
+     *        was given.
+     * @param systemId The entity's system identifier.
+     * @param notationName The name of the associated notation.
+     * @see #notationDecl
+     * @see org.xml.sax.Attributes
      */
     void unparsedEntityDecl(String name, String publicId,
                             String systemId, String notationName)
             throws SAXException;
 
     /**
-     * This method executes upon notification of a internal general entity declaration event.
+     * This method executes upon notification of a internal general entity declaration event per <a href="https://www.w3.org/TR/REC-xml/#sec-internal-ent">W3 Rec <cite>Extensible Markup Language (XML) 1.0</cite></a>.
      *
      * @param name  The internal general entity name.
      * @param value The value of the entity, which may include unexpanded
@@ -109,8 +143,8 @@ public interface DTDEventListener extends EventListener {
             throws SAXException;
 
     /**
-     * This method executes upon notification of an external parsed general entity
-     * declaration event.
+     * This method executes upon notification of an external parsed general
+     * entity declaration event per <a href="https://www.w3.org/TR/REC-xml/#sec-external-ent">W3 Rec <cite>Extensible Markup Language (XML) 1.0</cite></a>.
      *
      * <p>If a system identifier is present, and it is a relative URL, the
      * parser will have resolved it fully before passing it through this
@@ -128,8 +162,8 @@ public interface DTDEventListener extends EventListener {
             throws SAXException;
 
     /**
-     * This method executes upon notification of a internal parameter entity declaration
-     * event.
+     * This method executes upon notification of a internal parameter entity
+     * declaration event per <a href="https://www.w3.org/TR/REC-xml/#sec-internal-ent">W3 Rec <cite>Extensible Markup Language (XML) 1.0</cite></a>.
      *
      * @param name  The internal parameter entity name.
      * @param value The value of the entity, which may include unexpanded
@@ -142,8 +176,8 @@ public interface DTDEventListener extends EventListener {
             throws SAXException;
 
     /**
-     * This method executes upon notification of an external parameter entity declaration
-     * event.
+     * This method executes upon notification of an external parameter entity
+     * declaration event per <a href="https://www.w3.org/TR/REC-xml/#sec-external-ent">W3 Rec <cite>Extensible Markup Language (XML) 1.0</cite></a>.
      *
      * <p>If a system identifier is present, and it is a relative URL, the
      * parser will have resolved it fully before passing it through this
@@ -161,7 +195,7 @@ public interface DTDEventListener extends EventListener {
             throws SAXException;
 
     /**
-     * This method executes upon notification of the beginning of the DTD.
+     * This method executes upon notification of the beginning of the DTD per <a href="https://www.w3.org/TR/REC-xml/#sec-starttags">W3 Rec <cite>Extensible Markup Language (XML) 1.0</cite></a>.
      *
      * @param in Current input entity.
      * @throws SAXException for errors
@@ -171,8 +205,8 @@ public interface DTDEventListener extends EventListener {
             throws SAXException;
 
     /**
-     * This method executes upon notification of reaching the end of a DTD.  The parser will invoke
-     * this method only once.
+     * This method executes upon notification of reaching the end of a DTD per <a href="https://www.w3.org/TR/REC-xml/#sec-starttags">W3 Rec <cite>Extensible Markup Language (XML) 1.0</cite></a>.
+     * <p>The parser will invoke this method only once.
      *
      * @throws SAXException for errors
      * @see #startDTD(InputEntity)
@@ -181,7 +215,7 @@ public interface DTDEventListener extends EventListener {
             throws SAXException;
 
     /**
-     * This method executes upon notification that a comment has been read.
+     * This method executes upon notification that a comment has been read per <a href="https://www.w3.org/TR/REC-xml/#sec-comments">W3 Rec <cite>Extensible Markup Language (XML) 1.0</cite></a>.
      *
      * <P> Note that processing instructions are the mechanism designed
      * to hold information for consumption by applications, not comments.
@@ -196,24 +230,25 @@ public interface DTDEventListener extends EventListener {
             throws SAXException;
 
     /**
-     * This method executes upon notification of character data.
+     * This method executes upon notification of character data from the body of
+     * an XML element per <a href="https://www.w3.org/TR/REC-xml/#sec-starttags">W3 Rec <cite>Extensible Markup Language (XML) 1.0</cite></a>.
      *
-     * <p>The Parser will call this method to report each chunk of
+     * @apiNote The Parser will call this method to report each chunk of
      * character data.  SAX parsers may return all contiguous character
      * data in a single chunk, or they may split it into several
      * chunks; however, all of the characters in any single event
      * must come from the same external entity, so that the Locator
-     * provides useful information.</p>
+     * provides useful information.
      *
-     * <p>The application must not attempt to read from the array
-     * outside of the specified range.</p>
+     * @implNote The client application must not attempt to read from the array
+     * outside of the specified range.
      *
-     * <p>Note that some parsers will report whitespace using the
-     * ignorableWhitespace() method rather than this one (validating
-     * parsers must do so).</p>
+     * @implSpec Some parsers will report whitespace using the
+     * {@link #ignorableWhitespace} method rather than this one (validating
+     * parsers must do so).
      *
      * @param ch     The characters from the DTD.
-     * @param start  The start position in the array.
+     * @param start  The starting offset into the buffer.
      * @param length The number of characters to read from the array.
      * @throws SAXException for errors
      * @see #ignorableWhitespace(char[], int, int)
@@ -251,9 +286,10 @@ public interface DTDEventListener extends EventListener {
             throws SAXException;
 
     /**
-     * This method executes upon notification that a CDATA section is beginning.
-     * Data in a CDATA section is then reported through the appropriate event,
-     * either * <em>characters()</em> or <em>ignorableWhitespace</em>.
+     * This method executes upon notification that a {@code CDATA} section is
+     * beginning. Data in a {@code CDATA} section is then reported through the
+     * either {@link #characters} or {@link #ignorableWhitespace}.
+     * #ignorableWhitespace}.
      *
      * @throws SAXException for errors
      * @see #endCDATA()
@@ -262,7 +298,7 @@ public interface DTDEventListener extends EventListener {
 
 
     /**
-     * This method executes upon notification that the CDATA section finished.
+     * This method executes upon notification that the {@code CDATA} section finished.
      *
      * @throws SAXException for errors
      * @see #startCDATA()
@@ -387,7 +423,7 @@ public interface DTDEventListener extends EventListener {
     void warning(SAXParseException warn) throws SAXException;
 
     /**
-     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as EMPTY allow only attributes. Their attributes may
+     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as {@code  EMPTY} allow only attributes. Their attributes may
      * characterize the element or reference other files. An empty element
      * doesn't contain any content or data.
      * <p>
@@ -395,7 +431,7 @@ public interface DTDEventListener extends EventListener {
      */
     short CONTENT_MODEL_EMPTY = 0;
     /**
-     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as ANY allows either an element or parsed character
+     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as {@code ANY} allows either an element or parsed character
      * data as content for the element. The element may contain any number of
      * child elements or character data.
      * <p>
@@ -403,7 +439,7 @@ public interface DTDEventListener extends EventListener {
      */
     short CONTENT_MODEL_ANY = 1;
     /**
-     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as MIXED allows either an element or parsed character
+     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as {@code MIXED} allows either an element or parsed character
      * data as content for the element. The element may contain any number of
      * child elements or character data. The character data must be of type
      * #PCDATA.
@@ -412,7 +448,7 @@ public interface DTDEventListener extends EventListener {
      */
     short CONTENT_MODEL_MIXED = 2;
     /**
-     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as CHILDREN allows only elements as content for the element.
+     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as {@code CHILDREN} allows only elements as content for the element.
      * The element may contain any number of child elements.
      * <p>
      * An example of a children element is <code>&lt;element name="foo" minOccurs="1" maxOccurs="1"&gt; &lt;/element&gt;</code> processing instruction.
@@ -424,10 +460,10 @@ public interface DTDEventListener extends EventListener {
      *
      * @param elementName      name of the element whose content model is going to be defined.
      * @param contentModelType {@link #CONTENT_MODEL_EMPTY}
-     *                         this element has EMPTY content model. This notification
+     *                         this element has {@code EMPTY} content model. This notification
      *                         will be immediately followed by the corresponding endContentModel.
      *                         {@link #CONTENT_MODEL_ANY}
-     *                         this element has ANY content model. This notification
+     *                         this element has {@code ANY} content model. This notification
      *                         will be immediately followed by the corresponding endContentModel.
      *                         {@link #CONTENT_MODEL_MIXED}
      *                         this element has mixed content model. #PCDATA will not be reported.
@@ -449,10 +485,10 @@ public interface DTDEventListener extends EventListener {
      * This method executes upon notification that parsing of content model is finished.
      * @param elementName      name of the element whose content model is going to be defined.
      * @param contentModelType {@link #CONTENT_MODEL_EMPTY}
-     *                          this element has EMPTY content model. This notification
+     *                          this element has {@code EMPTY} content model. This notification
      *                          will be immediately followed by the corresponding endContentModel.
      *                          {@link #CONTENT_MODEL_ANY}
-     *                          this element has ANY content model. This notification
+     *                          this element has {@code ANY} content model. This notification
      *                          will be immediately followed by the corresponding endContentModel.
      *                          {@link #CONTENT_MODEL_MIXED}
      *                          this element has mixed content model. #PCDATA will not be reported.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2022, 2023 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Distribution License v. 1.0, which is available at
@@ -125,7 +125,7 @@ public class InputEntity {
     //
     /**
      * Returns true if this is a PE expansion, so that
-     * <code>LexicalEventListener.endParsedEntity</code> won't be called
+     * {@code LexicalEventListener.endParsedEntity} won't be called
      * @return true if this is a PE expansion
      * @see LexicalEventListener#endParsedEntity
      */
@@ -1041,9 +1041,9 @@ public class InputEntity {
             len = buf.length - len;
             len = reader.read(buf, finish, len);
         } catch (UnsupportedEncodingException err) {
-            fatal("P-075", new Object[]{e.getMessage()});
+            fatal("P-075", new Object[]{err.getMessage()});
         } catch (CharConversionException err) {
-            fatal("P-076", new Object[]{e.getMessage()});
+            fatal("P-076", new Object[]{err.getMessage()});
         }
         if (len >= 0)
             finish += len;

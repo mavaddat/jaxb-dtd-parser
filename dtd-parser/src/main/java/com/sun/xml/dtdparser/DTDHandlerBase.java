@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2022, 2023 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Distribution License v. 1.0, which is available at
@@ -15,7 +15,20 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * do-nothing implementation of DTDEventHandler.
+ * This is a minimal implementation of the {@link DTDEventListener}
+ * interface, meaning that none of the delegate methods do anything. This
+ * class is provided as a convenience for inheritance in client applications.
+ * To consume DTD events, client applications may either extend this class or
+ * implement the {@link DTDEventListener} interface
+ * directly.
+ * <p>
+ * Exemplary concrete child classes using this pattern may be found below:
+ * <ul>
+ * <li>{@link com.sun.tools.xjc.reader.dtd.TDTDReader}</li>
+ * <li>{@link com.sun.xml.dtdparser.DTDParserBase}</li>
+ * </ul>
+ * The above list is not exhaustive nor do the examples demonstrate all
+ * possible use cases.
  */
 public class DTDHandlerBase implements DTDEventListener {
 
@@ -35,12 +48,12 @@ public class DTDHandlerBase implements DTDEventListener {
 
     @Override
     public void fatalError(SAXParseException err) throws SAXException {
-        throw e;
+        throw err;
     }
 
     @Override
     public void error(SAXParseException err) throws SAXException {
-        throw e;
+        throw err;
     }
 
     @Override

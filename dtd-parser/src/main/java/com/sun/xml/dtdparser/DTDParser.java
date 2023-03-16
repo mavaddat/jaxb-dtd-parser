@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1998, 2022 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1998, 2022, 2023 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Distribution License v. 1.0, which is available at
@@ -40,7 +40,7 @@ import java.util.logging.Logger;
  * by the parser.
  * <p>
  * This parser produces a stream of parse events. It supports some features
- * (exposing comments, CDATA sections, and entity references) which are not
+ * (exposing comments, {@code  CDATA}sections, and entity references) which are not
  * required to be reported by conformant XML processors.
  *
  * @author David Brownell
@@ -51,52 +51,52 @@ import java.util.logging.Logger;
 public class DTDParser {
 
     /**
-     * CDATA type. This is a constant used to indicate that the type of an
+     * {@code  CDATA}type. This is a constant used to indicate that the type of an
      * attribute is CDATA.
      */
     public final static String TYPE_CDATA = "CDATA";
     /**
-     * ID type. This is a constant used to indicate that the type of an
+     * {@code  ID}type. This is a constant used to indicate that the type of an
      * attribute is ID.
      */
     public final static String TYPE_ID = "ID";
     /**
-     * IDREF type. This is a constant used to indicate that the type of an
+     * {@code  IDREF}type. This is a constant used to indicate that the type of an
      * attribute is IDREF.
      */
     public final static String TYPE_IDREF = "IDREF";
     /**
-     * IDREFS type. This is a constant used to indicate that the type of an
+     * {@code  IDREFS}type. This is a constant used to indicate that the type of an
      * attribute is IDREFS.
      */
     public final static String TYPE_IDREFS = "IDREFS";
     /**
-     * ENTITY type. This is a constant used to indicate that the type of an
+     * {@code  ENTITY}type. This is a constant used to indicate that the type of an
      * attribute is ENTITY.
      */
     public final static String TYPE_ENTITY = "ENTITY";
     /**
-     * ENTITIES type. This is a constant used to indicate that the type of an
+     * {@code  ENTITIES}type. This is a constant used to indicate that the type of an
      * attribute is ENTITIES.
      */
     public final static String TYPE_ENTITIES = "ENTITIES";
     /**
-     * NMTOKEN type. This is a constant used to indicate that the type of an
+     * {@code  NMTOKEN}type. This is a constant used to indicate that the type of an
      * attribute is NMTOKEN.
      */
     public final static String TYPE_NMTOKEN = "NMTOKEN";
     /**
-     * NMTOKENS type. This is a constant used to indicate that the type of an
+     * {@code  NMTOKENS}type. This is a constant used to indicate that the type of an
      * attribute is NMTOKENS.
      */
     public final static String TYPE_NMTOKENS = "NMTOKENS";
     /**
-     * NOTATION type. This is a constant used to indicate that the type of an
+     * {@code  NOTATION}type. This is a constant used to indicate that the type of an
      * attribute is NOTATION.
      */
     public final static String TYPE_NOTATION = "NOTATION";
     /**
-     * ENUMERATION type. This is a constant used to indicate that the type of an
+     * {@code  ENUMERATION}type. This is a constant used to indicate that the type of an
      * attribute is ENUMERATION.
      */
     public final static String TYPE_ENUMERATION = "ENUMERATION";
@@ -139,17 +139,17 @@ public class DTDParser {
     /**
      * Used by applications to request locale for diagnostics.
      *
-     * @param l The locale to use, or null to use system defaults (which may
+     * @param locale The locale to use, or null to use system defaults (which may
      * include only message IDs).
      * @throws SAXException for errors
      */
-    public void setLocale(Locale l) throws SAXException {
+    public void setLocale(Locale locale) throws SAXException {
 
-        if (l != null && !messages.isLocaleSupported(l.toString())) {
+        if (locale != null && !messages.isLocaleSupported(locale.toString())) {
             throw new SAXException(messages.getMessage(locale,
-                    "P-078", new Object[]{l}));
+                    "P-078", new Object[]{locale}));
         }
-        locale = l;
+        this.locale = locale;
     }
 
     /**
@@ -165,7 +165,7 @@ public class DTDParser {
      * specified in the list that is supported by this parser. That locale is
      * then set using <a href="#setLocale(java.util.Locale)"> setLocale()</a>.
      * Such a list could be provided by a variety of user preference mechanisms,
-     * including the HTTP <em>Accept-Language</em> header field.
+     * including the HTTP {@code Accept-Language} header field.
      *
      * @param languages Array of language specifiers, ordered with the most
      * preferable one at the front. For example, "en-ca" then "fr-ca", followed
@@ -376,9 +376,9 @@ public class DTDParser {
                 fatal("P-003", null);
             }
         } catch (RuntimeException err) {
-            LOGGER.log(Level.SEVERE, "Internal DTD parser error.", e);
-            throw new SAXParseException(e.getMessage() != null
-                    ? e.getMessage() : e.getClass().getName(),
+            LOGGER.log(Level.SEVERE, "Internal DTD parser error.", err);
+            throw new SAXParseException(err.getMessage() != null
+                    ? err.getMessage() : err.getClass().getName(),
                     getPublicId(), getSystemId(),
                     getLineNumber(), getColumnNumber());
 
@@ -2309,7 +2309,7 @@ public class DTDParser {
             SAXParseException spe = new SAXParseException(msg,
                     getPublicId(), getSystemId(), getLineNumber(), getColumnNumber(), e);
             dtdHandler.fatalError(spe);
-            throw e;
+            throw err;
         }
 
         r.init(s, next.name, in, next.isPE);
