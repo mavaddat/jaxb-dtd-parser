@@ -20,7 +20,7 @@ import java.util.EventListener;
  * All DTD parsing events are signaled through delegate methods of this
  * interface. Client applications should either
  * <ol>
- * <li>implement <code>DTDEventListener</code> and override
+ * <li>implement {@code DTDEventListener} and override
  * methods that pertain to DTD features they need to process, <strong>or</strong></li>
  * <li>extend {@link DTDHandlerBase} and override only those methods 
  * that pertain to DTD features they need to process.</li>
@@ -81,7 +81,7 @@ public interface DTDEventListener extends EventListener {
      * declarations, and are sometime used with processing instruction
      * target names.</p>
      *
-     * <p>At least one of <code>publicId</code> and <code>systemId</code> shall
+     * <p>At least one of {@code publicId} and {@code systemId} shall
      * be non-null. If a system identifier is present, and it is a URL, the SAX
      * parser shall resolve it fully before passing it to the client
      * application through this event.</p>
@@ -423,35 +423,35 @@ public interface DTDEventListener extends EventListener {
     void warning(SAXParseException warn) throws SAXException;
 
     /**
-     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as {@code  EMPTY} allow only attributes. Their attributes may
+     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration">{@code contentSpec}</a> is marked as {@code  EMPTY} allow only attributes. Their attributes may
      * characterize the element or reference other files. An empty element
      * doesn't contain any content or data.
      * <p>
-     * An example of an empty element is <code>&lt;attribute name="prodid" type="positiveInteger"/&gt;</code> processing instruction.
+     * An example of an empty element is {@code <attribute name="prodid" type="positiveInteger"/>} processing instruction.
      */
     short CONTENT_MODEL_EMPTY = 0;
     /**
-     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as {@code ANY} allows either an element or parsed character
+     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration">{@code contentSpec}</a> is marked as {@code ANY} allows either an element or parsed character
      * data as content for the element. The element may contain any number of
      * child elements or character data.
      * <p>
-     * An example of an any element is <code>&lt;element name="foo" minOccurs="1" maxOccurs="1"&gt;* &lt;/element&gt;</code> processing instruction.
+     * An example of an any element is {@code <element name="foo" minOccurs="1" maxOccurs="1">* </element>} processing instruction.
      */
     short CONTENT_MODEL_ANY = 1;
     /**
-     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as {@code MIXED} allows either an element or parsed character
+     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration">{@code contentSpec}</a> is marked as {@code MIXED} allows either an element or parsed character
      * data as content for the element. The element may contain any number of
      * child elements or character data. The character data must be of type
      * #PCDATA.
      * <p>
-     * An example of a mixed element is <code>&lt;element name="foo" minOccurs="1" maxOccurs="1"&gt;#PCDATA &lt;/element&gt;</code> processing instruction.
+     * An example of a mixed element is {@code <element name="foo" minOccurs="1" maxOccurs="1">#PCDATA </element>} processing instruction.
      */
     short CONTENT_MODEL_MIXED = 2;
     /**
-     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration"><code>contentSpec</code></a> is marked as {@code CHILDREN} allows only elements as content for the element.
+     * Elements whose <a href="https://www.w3.org/TR/DOM-Level-3-CMLS/content-models.html#CM-Interfaces-CMModel-createCMElementDeclaration">{@code contentSpec}</a> is marked as {@code CHILDREN} allows only elements as content for the element.
      * The element may contain any number of child elements.
      * <p>
-     * An example of a children element is <code>&lt;element name="foo" minOccurs="1" maxOccurs="1"&gt; &lt;/element&gt;</code> processing instruction.
+     * An example of a children element is {@code <element name="foo" minOccurs="1" maxOccurs="1"> </element>} processing instruction.
      */
     short CONTENT_MODEL_CHILDREN = 3;
 
@@ -506,43 +506,43 @@ public interface DTDEventListener extends EventListener {
     void endContentModel(String elementName, short contentModelType) throws SAXException;
 
     /**
-     * An unpredicated attribute declared in an <code>ATTLIST</code> declaration which sets
+     * An unpredicated attribute declared in an {@code ATTLIST} declaration which sets
      * the default value of the attribute.
      */
     short USE_NORMAL = 0;
     /**
-     * An attribute declared in an <code>ATTLIST</code> declaration which is marked optional using the <code>#IMPLIED</code> keyword predicate.
+     * An attribute declared in an {@code ATTLIST} declaration which is marked optional using the {@code #IMPLIED} keyword predicate.
      */
     short USE_IMPLIED = 1;
     /**
-     * An attribute declared in an <code>ATTLIST</code> declaration which is marked fixed using the <code>#FIXED</code> keyword predicate.
+     * An attribute declared in an {@code ATTLIST} declaration which is marked fixed using the {@code #FIXED} keyword predicate.
      */
     short USE_FIXED = 2;
     /**
-     * An attribute declared in an <code>ATTLIST</code> declaration which is marked required using the <code>#REQUIRED</code> keyword predicate.
+     * An attribute declared in an {@code ATTLIST} declaration which is marked required using the {@code #REQUIRED} keyword predicate.
      */
     short USE_REQUIRED = 3;
 
     /**
-     * For each entry in an <code>ATTLIST</code> declaration,
+     * For each entry in an {@code ATTLIST} declaration,
      * this event will be fired.
      * @param elementName name of the element
      * @param attributeName name of the attribute
      * @param attributeType attribute type. This is the same as
      *                      the value of the TYPE parameter in the
-     *                      <code>ATTLIST</code> declaration, or "<code>#IMPLIED</code>" if the
-     *                      <code>ATTLIST</code> declaration did not specify a type.
+     *                      {@code ATTLIST} declaration, or "{@code #IMPLIED}" if the
+     *                      {@code ATTLIST} declaration did not specify a type.
      * @param enumeration enumeration values. This is the same as
      *                      the value of the ENUMERATION parameter in the
-     *                      <code>ATTLIST</code> declaration, or null if the <code>ATTLIST</code>
+     *                      {@code ATTLIST} declaration, or null if the {@code ATTLIST}
      *                      declaration did not specify an enumeration.
      * @param attributeUse attribute use. This is the same as
      *                      the value of the USE parameter in the
-     *                      <code>ATTLIST</code> declaration, or <code>USE_NORMAL</code> if the
-     *                      <code>ATTLIST</code> declaration did not specify a use.
+     *                      {@code ATTLIST} declaration, or {@code USE_NORMAL} if the
+     *                      {@code ATTLIST} declaration did not specify a use.
      * @param defaultValue default value. This is the same as
      *                      the value of the DEFAULT parameter in the
-     *                      <code>ATTLIST</code> declaration, or null if the <code>ATTLIST</code>
+     *                      {@code ATTLIST} declaration, or null if the {@code ATTLIST}
      *                      declaration did not specify a default.
      *
      * <p>
@@ -595,11 +595,11 @@ public interface DTDEventListener extends EventListener {
     void endModelGroup(short occurrence) throws SAXException;
 
     /** 
-     * The Connector Type <code>choice</code>.
+     * The Connector Type {@code choice}.
      * See more info at <a href="http://www.w3.org/TR/xmlschema11-1/#element-choice">W3 XML Schema Element Choice</a>. */
     short CHOICE = 0;
     /** 
-     * The Connector Type <code>sequence</code>.
+     * The Connector Type {@code sequence}.
      * See more info at <a href="https://www.w3.org/TR/xmlschema11-1/#element-sequence">W3 XML Schema Element Sequence</a>. */
     short SEQUENCE = 1;
 
@@ -613,18 +613,18 @@ public interface DTDEventListener extends EventListener {
     void connector(short connectorType) throws SAXException;
 
     /** 
-     * Zero or more occurrences corresponding to regex <code>*</code> quantifier. */
+     * Zero or more occurrences corresponding to regex {@code *} quantifier. */
     short OCCURRENCE_ZERO_OR_MORE = 0;
     /** 
-     * One or more occurrences corresponding to regex <code>+</code> quantifier.
+     * One or more occurrences corresponding to regex {@code +} quantifier.
     */
     short OCCURRENCE_ONE_OR_MORE = 1;
     /** 
-     * Zero or one occurrences corresponding to regex <code>?</code> quantifier
+     * Zero or one occurrences corresponding to regex {@code ?} quantifier
      * . */
     short OCCURRENCE_ZERO_OR_ONE = 2;
     /** 
-     * Exactly one occurrence corresponding to regex <code>{1}</code> quantifier.
+     * Exactly one occurrence corresponding to regex {@code {1}} quantifier.
     */
     short OCCURRENCE_ONCE = 3;
 }
