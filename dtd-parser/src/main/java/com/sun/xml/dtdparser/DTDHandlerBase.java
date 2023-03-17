@@ -24,11 +24,37 @@ import org.xml.sax.SAXParseException;
  * <p>
  * Exemplary concrete child classes using this pattern may be found below:
  * <ul>
- * <li>{@link com.sun.tools.xjc.reader.dtd.TDTDReader}</li>
- * <li>{@link com.sun.xml.dtdparser.DTDParserBase}</li>
+ * <li><a href="https://github.com/openjdk/jdk/blob/master/src/java.xml/share/classes/org/xml/sax/helpers/DefaultHandler.java#L70">
+ * {@code org.xml.sax.helpers.DefaultHandler}</a> in <cite>OpenJDK</cite>'s
+ * <cite>JDK Project</li>
+ * <li><a href="https://github.com/android-async-http/android-async-http/blob/master/sample/src/main/java/com/loopj/android/http/sample/SaxSample.java#L105">
+ * {@code com.loopj.android.http.sample.SaxSample}</a> in <cite>James
+ * Smith</cite>'s <cite>Android Asynchronous Http Client</li>
+ * <li><a href="https://github.com/stanfordnlp/CoreNLP/blob/main/src/edu/stanford/nlp/process/TransformXML.java#L41">
+ * {@code edu.stanford.nlp.process.TransformXML}</a> in
+ * <cite>StanfordNLP</cite>'s <cite>Python NLP Library
+ * for Many Human Languages</li>
+ * <li><a href="https://github.com/liquibase/liquibase/blob/master/liquibase-core/src/main/java/liquibase/parser/core/xml/XMLChangeLogSAXHandler.java#L21">
+ * {@code liquibase.parser.core.xml.XMLChangeLogSAXHandler}</a> in
+ * <cite>Nathan Voxland</cite>'s <cite>Liquibase library</li>
+ * <li><a href="https://github.com/thinkgem/jeesite4/blob/v5.3/common/src/main/java/com/jeesite/common/utils/excel/ExcelReader.java#L32">
+ * {@code com.jeesite.common.utils.excel.ExcelReader}</a> in
+ * <cite>thinkgem</cite>'s <cite>jeesite</li>
+ * <li><a href="https://github.com/w3c/epubcheck/blob/main/src/main/java/com/adobe/epubcheck/xml/handlers/DelegateDefaultHandler.java#L20">
+ * {@code com.adobe.epubcheck.xml.handlers.DelegateDefaultHandler}</a> in
+ * <cite>World Wide Web Consortium (W3C)</cite>'s <cite>EPUBCheck</li>
+ * <li><a href="https://github.com/adempiere/adempiere/blob/develop/base/src/org/adempiere/pipo/PackInHandler.java#L75">
+ * {@code org.adempiere.pipo.PackInHandler}</a> in <cite>ADempiere</cite>'s
+ * <cite>ADempiere Project</li>
+ * <li><a href="https://github.com/eclipse-ee4j/glassfish/blob/master/appserver/web/web-core/src/main/java/org/apache/tomcat/util/digester/Digester.java#L63">
+ * {@code org.apache.tomcat.util.digester.Digester}</a> in
+ * <cite>Eclipse EE4J</cite>'s <cite>GlassFish</li>
+ * <li><a href="https://github.com/eclipse-ee4j/jaxb-ri/blob/master/jaxb-ri/xjc/src/main/java/com/sun/tools/xjc/reader/dtd/TDTDReader.java#L64">
+ * {@code com.sun.tools.xjc.reader.dtd.TDTDReader}</a> in <cite>Eclipse
+ * EE4J</cite>'s <cite>Implementation of JAXB</li>
  * </ul>
- * The above list is not exhaustive nor do the examples demonstrate all
- * possible use cases.
+ * Note: This list is not exhaustive nor do the examples demonstrate all
+ * possible use cases. Inclusion in the list is not intended as an endorsement.
  */
 public class DTDHandlerBase implements DTDEventListener {
 

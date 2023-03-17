@@ -29,23 +29,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This implements parsing of XML 1.0 DTDs.
+ * Parser class to analyze XML 1.0 DTD into specified parts and syntactic roles.
  * <p>
- * This conforms to the portion of the XML 1.0 specification related to the
- * external DTD subset.
+ * Parsing controls conform to the <cite>external DTD subset</cite> of the
+ * <cite>XML 1.0 specification</cite>.
  * <p>
- * For multi-language applications (such as web servers using XML processing to
- * create dynamic content), a method supports choosing a locale for parser
- * diagnostics which is both understood by the message recipient and supported
- * by the parser.
+ * For multilingual applications (such as web servers using XML processing to
+ * create dynamic content), the class method {@link #setLocale} supports
+ * setting or {@link #chooseLocale} for choosing a locale for diagnostic
+ * messages understandable by the message recipient.
  * <p>
- * This parser produces a stream of parse events. It supports some features
- * (exposing comments, {@code  CDATA}sections, and entity references) which are not
- * required to be reported by conformant XML processors.
+ * The parser object produces a stream of parse events. It supports some
+ * features (exposing comments, {@code  CDATA}sections, and entity references)
+ * which are not required to be reported by conformant XML processors.
  *
  * @author David Brownell
  * @author Janet Koenig
  * @author Kohsuke KAWAGUCHI
+ * @author Mavaddat Javid
  * @version $Id: DTDParser.java,v 1.2 2009-04-16 15:25:49 snajper Exp $
  */
 public class DTDParser {
@@ -135,7 +136,7 @@ public class DTDParser {
     public DTDParser() {}
 
     /**
-     * Used by applications to request locale for diagnostics.
+     * Used by applications set the locale for diagnostic messages.
      *
      * @param locale The locale to use, or null to use system defaults (which
      * may include only message IDs).
@@ -151,7 +152,7 @@ public class DTDParser {
     }
 
     /**
-     * Returns the diagnostic locale.
+     * Returns the current locale for diagnostic messages.
      * @return the diagnostic locale
      */
     public Locale getLocale() {
@@ -161,12 +162,12 @@ public class DTDParser {
     /**
      * Chooses a client locale to use for diagnostics, using the first language
      * specified in the list that is supported by this parser. That locale is
-     * then set using <a href="#setLocale(java.util.Locale)"> setLocale()</a>.
+     * then set using {@link #setLocale(java.util.Locale) setLocale()}.
      * Such a list could be provided by a variety of user preference mechanisms,
      * including the HTTP {@code Accept-Language} header field.
      *
      * @param languages Array of language specifiers, ordered with the most
-     * preferable one at the front. For example, "en-ca" then "fr-ca", followed
+     * preferable to least. For example, "en-ca" then "fr-ca", followed
      * by "zh_CN". Both RFC 1766 and Java styles are supported.
      * @return The chosen locale, or null.
      * @throws SAXException for errors
@@ -175,21 +176,21 @@ public class DTDParser {
     public Locale chooseLocale(String[] languages)
             throws SAXException {
 
-        Locale l = messages.chooseLocale(languages);
+        Locale locale = messages.chooseLocale(languages);
 
-        if (l != null) {
+        if (locale != null) {
             setLocale(l);
         }
-        return l;
+        return locale;
     }
 
     /**
      * Lets applications control entity resolution.
-     * @param r EntityResolver
+     * @param resolver EntityResolver
      */
-    public void setEntityResolver(EntityResolver r) {
+    public void setEntityResolver(EntityResolver resolver) {
 
-        resolver = r;
+        this.resolver = resolver;
     }
 
     /**
@@ -233,15 +234,15 @@ public class DTDParser {
     }
 
     /**
-     * Returns the handler used to for DTD parsing events.
-     * @return the handler
+     * Returns the handler used for DTD parsing events.
+     * @return DTD parsing events handler
      */
     public DTDEventListener getDtdHandler() {
         return dtdHandler;
     }
 
     /**
-     * Parse a DTD.
+     * Parse a DTD by input source.
      * @param in InputSource
      * @throws IOException for errors
      * @throws SAXException for errors
@@ -253,7 +254,7 @@ public class DTDParser {
     }
 
     /**
-     * Parse a DTD.
+     * Parse a DTD by URI.
      * @param uri URI
      * @throws IOException for errors
      * @throws SAXException for errors
@@ -2274,9 +2275,9 @@ public class DTDParser {
     private void pushReader(char[] buf, String name, boolean isGeneral)
             throws SAXException {
 
-        InputEntity r = InputEntity.getInputEntity(dtdHandler, locale);
-        r.init(buf, name, in, !isGeneral);
-        in = r;
+        InputEntity resolver = InputEntity.getInputEntity(dtdHandler, locale);
+        resolver.init(buf, name, in, !isGeneral);
+        in = resolver;
     }
     /**
      * Pushes a new reader for the specified external entity.
@@ -2293,8 +2294,8 @@ public class DTDParser {
     private void pushReader(ExternalEntity next)
             throws IOException, SAXException {
 
-        InputEntity r = InputEntity.getInputEntity(dtdHandler, locale);
-        InputSource s;
+        InputEntity resolver = InputEntity.getInputEntity(dtdHandler, locale);
+        InputSource source;
         try {
             s = next.getInputSource(resolver);
         } catch (IOException err) {
@@ -2310,8 +2311,8 @@ public class DTDParser {
             throw err;
         }
 
-        r.init(s, next.name, in, next.isPE);
-        in = r;
+        resolver.init(source, next.name, in, next.isPE);
+        in = resolver;
     }
     /**
      * Gets the public identifier of the current input
@@ -2374,7 +2375,7 @@ public class DTDParser {
         SAXParseException err = new SAXParseException(messages.getMessage(locale, messageId, parameters),
                 getPublicId(), getSystemId(), getLineNumber(), getColumnNumber());
 
-        dtdHandler.error(e);
+        dtdHandler.error(err);
     }
 
     /**
@@ -2401,9 +2402,9 @@ public class DTDParser {
         SAXParseException err = new SAXParseException(messages.getMessage(locale, messageId, parameters),
                 getPublicId(), getSystemId(), getLineNumber(), getColumnNumber());
 
-        dtdHandler.fatalError(e);
+        dtdHandler.fatalError(err);
 
-        throw e;
+        throw err;
     }
 
     //
