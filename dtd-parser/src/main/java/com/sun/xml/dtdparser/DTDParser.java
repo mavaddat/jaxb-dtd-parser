@@ -51,8 +51,8 @@ import java.util.logging.Logger;
 public class DTDParser {
 
     /**
-     * {@code  CDATA}type. This is a constant used to indicate that the type of an
-     * attribute is CDATA.
+     * {@code  CDATA}type. This is a constant used to indicate that the type of 
+     * an attribute is CDATA.
      */
     public final static String TYPE_CDATA = "CDATA";
     /**
@@ -61,43 +61,43 @@ public class DTDParser {
      */
     public final static String TYPE_ID = "ID";
     /**
-     * {@code  IDREF}type. This is a constant used to indicate that the type of an
-     * attribute is IDREF.
+     * {@code  IDREF}type. This is a constant used to indicate that the type of
+     * an attribute is IDREF.
      */
     public final static String TYPE_IDREF = "IDREF";
     /**
-     * {@code  IDREFS}type. This is a constant used to indicate that the type of an
-     * attribute is IDREFS.
+     * {@code  IDREFS}type. This is a constant used to indicate that the type
+     * of an attribute is IDREFS.
      */
     public final static String TYPE_IDREFS = "IDREFS";
     /**
-     * {@code  ENTITY}type. This is a constant used to indicate that the type of an
-     * attribute is ENTITY.
+     * {@code  ENTITY}type. This is a constant used to indicate that the type
+     * of an attribute is ENTITY.
      */
     public final static String TYPE_ENTITY = "ENTITY";
     /**
-     * {@code  ENTITIES}type. This is a constant used to indicate that the type of an
-     * attribute is ENTITIES.
+     * {@code  ENTITIES}type. This is a constant used to indicate that the type
+     * of an attribute is ENTITIES.
      */
     public final static String TYPE_ENTITIES = "ENTITIES";
     /**
-     * {@code  NMTOKEN}type. This is a constant used to indicate that the type of an
-     * attribute is NMTOKEN.
+     * {@code  NMTOKEN}type. This is a constant used to indicate that the type
+     * of an attribute is NMTOKEN.
      */
     public final static String TYPE_NMTOKEN = "NMTOKEN";
     /**
-     * {@code  NMTOKENS}type. This is a constant used to indicate that the type of an
-     * attribute is NMTOKENS.
+     * {@code  NMTOKENS}type. This is a constant used to indicate that the type
+     * of an attribute is NMTOKENS.
      */
     public final static String TYPE_NMTOKENS = "NMTOKENS";
     /**
-     * {@code  NOTATION}type. This is a constant used to indicate that the type of an
-     * attribute is NOTATION.
+     * {@code  NOTATION}type. This is a constant used to indicate that the type
+     * of an attribute is NOTATION.
      */
     public final static String TYPE_NOTATION = "NOTATION";
     /**
-     * {@code  ENUMERATION}type. This is a constant used to indicate that the type of an
-     * attribute is ENUMERATION.
+     * {@code  ENUMERATION}type. This is a constant used to indicate that the
+     * type of an attribute is ENUMERATION.
      */
     public final static String TYPE_ENUMERATION = "ENUMERATION";
     // stack of input entities being merged
@@ -109,8 +109,6 @@ public class DTDParser {
     private char[] charTmp = new char[2];
     // temporary DTD parsing state
     private boolean doLexicalPE;
-    // DTD state, used during parsing
-//    private SimpleHashtable    elements = new SimpleHashtable (47);
     /**
      * The set of element names declared in the DTD.
      */
@@ -139,8 +137,8 @@ public class DTDParser {
     /**
      * Used by applications to request locale for diagnostics.
      *
-     * @param locale The locale to use, or null to use system defaults (which may
-     * include only message IDs).
+     * @param locale The locale to use, or null to use system defaults (which
+     * may include only message IDs).
      * @throws SAXException for errors
      */
     public void setLocale(Locale locale) throws SAXException {
