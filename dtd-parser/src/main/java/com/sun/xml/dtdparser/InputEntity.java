@@ -1080,8 +1080,8 @@ public class InputEntity {
         // not continuable ... e.g. WF errors
         close();
         if (errHandler != null) {
-            errHandler.fatalError(x);
+            errHandler.fatalError(err);
         }
-        throw x;
+        throw err;
     }
 }
