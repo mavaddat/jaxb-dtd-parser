@@ -127,7 +127,6 @@ public class InputEntity {
      * Returns true if this is a PE expansion, so that
      * {@code LexicalEventListener.endParsedEntity} won't be called
      * @return true if this is a PE expansion
-     * @see LexicalEventListener#endParsedEntity
      */
     public boolean isParameterEntity() {
         return isPE;

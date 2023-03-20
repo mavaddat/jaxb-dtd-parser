@@ -179,7 +179,7 @@ public class DTDParser {
         Locale locale = messages.chooseLocale(languages);
 
         if (locale != null) {
-            setLocale(l);
+            setLocale(locale);
         }
         return locale;
     }
@@ -2275,9 +2275,9 @@ public class DTDParser {
     private void pushReader(char[] buf, String name, boolean isGeneral)
             throws SAXException {
 
-        InputEntity resolver = InputEntity.getInputEntity(dtdHandler, locale);
-        resolver.init(buf, name, in, !isGeneral);
-        in = resolver;
+        InputEntity reader = InputEntity.getInputEntity(dtdHandler, locale);
+        reader.init(buf, name, in, !isGeneral);
+        in = reader;
     }
     /**
      * Pushes a new reader for the specified external entity.
@@ -2294,10 +2294,10 @@ public class DTDParser {
     private void pushReader(ExternalEntity next)
             throws IOException, SAXException {
 
-        InputEntity resolver = InputEntity.getInputEntity(dtdHandler, locale);
+        InputEntity reader = InputEntity.getInputEntity(dtdHandler, locale);
         InputSource source;
         try {
-            s = next.getInputSource(resolver);
+            source = next.getInputSource(resolver);
         } catch (IOException err) {
             String msg =
                     "unable to open the external entity from :" + next.systemId;
@@ -2306,13 +2306,13 @@ public class DTDParser {
             }
 
             SAXParseException spe = new SAXParseException(msg,
-                    getPublicId(), getSystemId(), getLineNumber(), getColumnNumber(), e);
+                    getPublicId(), getSystemId(), getLineNumber(), getColumnNumber(), err);
             dtdHandler.fatalError(spe);
             throw err;
         }
 
-        resolver.init(source, next.name, in, next.isPE);
-        in = resolver;
+        reader.init(source, next.name, in, next.isPE);
+        in = reader;
     }
     /**
      * Gets the public identifier of the current input
@@ -2360,7 +2360,7 @@ public class DTDParser {
         SAXParseException err = new SAXParseException(messages.getMessage(locale, messageId, parameters),
                 getPublicId(), getSystemId(), getLineNumber(), getColumnNumber());
 
-        dtdHandler.warning(e);
+        dtdHandler.warning(err);
     }
     /**
      * Raises an error message from the parser. This is
