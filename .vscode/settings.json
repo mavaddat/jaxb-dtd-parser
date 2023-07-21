@@ -1,7 +1,7 @@
 {
     "xml.logs.client": true,
     "explorerExclude.backup": {},
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "automatic",
     "cSpell.words": [
         "ATTLIST",
         "dtdparser",
